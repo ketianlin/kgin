@@ -1,0 +1,16 @@
+go:
+  config:
+    server_type: file
+    env: test
+    type: .yml
+    mid: "-"
+    path: /home/ke666/my_codes/go_codes/kgin/test
+    used: mysql,rabbitmq,redis
+    prefix:
+      mysql: kgin-mysql
+      redis: kgin-redis
+      rabbitmq: kgin-rabbitmq
+  logger:
+    level: debug
+    out: console,file
+    file: /home/ke666/tmp/kgin/log

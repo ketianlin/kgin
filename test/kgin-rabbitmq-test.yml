@@ -1,0 +1,4 @@
+go:
+  rabbitmq:
+    uri: amqp://kgin:111111@192.168.20.130:5672/%2fkgin
+    exchange: kgin_direct
