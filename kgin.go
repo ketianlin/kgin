@@ -1,6 +1,7 @@
 package kgin
 
 import (
+	"github.com/ketianlin/kgin/cache"
 	"github.com/ketianlin/kgin/config"
 	"github.com/ketianlin/kgin/db"
 	"github.com/ketianlin/kgin/logs"
@@ -100,4 +101,25 @@ func (m *kgin) checkAll() {
 			}
 		}
 	}
+}
+
+func (m *kgin) SafeExit() {
+	configs := config.Config.Config.Used
+	if strings.Contains(configs, "mysql") {
+		logs.Info("正在关闭MySQL连接")
+		db.Mysql.Close()
+	}
+	if strings.Contains(configs, "redis") {
+		logs.Info("正在关闭Redis连接")
+		db.Redis.Close()
+	}
+	if m.plugins != nil {
+		for dbConfigName, pl := range m.plugins {
+			if pl.CloseFunc != nil {
+				logs.Info("正在关闭{}", dbConfigName)
+				pl.CloseFunc()
+			}
+		}
+	}
+	cache.CloseCache()
 }
