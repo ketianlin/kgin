@@ -30,7 +30,6 @@ func (m *MysqlClient) Init(mysqlConfigUrl string) {
 		return
 	}
 	if m.mysql == nil {
-
 		var confData []byte
 		var err error
 		if strings.HasPrefix(m.confUrl, "http://") {

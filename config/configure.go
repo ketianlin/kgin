@@ -12,35 +12,43 @@ import (
 
 type config struct {
 	Cnf    *koanf.Koanf
-	App    app       `json:"app"`
-	Config appConfig `json:"config"`
-	Logger appLogger `json:"logger"`
+	App    app       `json:"app" bson:"app"`
+	Config appConfig `json:"config" bson:"config"`
+	Log    appLog    `json:"log" bson:"log"`
+	Logger appLogger `json:"logger" bson:"logger"`
 }
 
 type app struct {
-	Name   string `json:"name"`
-	Port   int    `json:"port"`
-	Debug  bool   `json:"debug"`
-	IpAddr string `json:"ipAddr"`
+	Name   string `json:"name" bson:"name"`
+	Port   int    `json:"port" bson:"port"`
+	Debug  bool   `json:"debug" bson:"debug"`
+	IpAddr string `json:"ipAddr" bson:"ipAddr"`
 }
 
 type appLogger struct {
-	Level string `json:"level"`
-	Out   string `json:"out"`
-	File  string `json:"file"`
+	Level string `json:"level" bson:"level"`
+	Out   string `json:"out" bson:"out"`
+	File  string `json:"file" bson:"file"`
+}
+
+type appLog struct {
+	RequestTableName string `json:"request" bson:"request"`
+	LogDb            string `json:"logDb" bson:"logDb"`
+	DbName           string `json:"dbName" bson:"dbName"`
 }
 
 type appConfig struct {
-	Server string `json:"server"`
-	Type   string `json:"type"`
-	Path   string `json:"path"`
-	Mid    string `json:"mid"`
-	Env    string `json:"env"`
-	Used   string `json:"used"`
+	Server string `json:"server" bson:"server"`
+	Type   string `json:"type" bson:"type"`
+	Path   string `json:"path" bson:"path"`
+	Mid    string `json:"mid" bson:"mid"`
+	Env    string `json:"env" bson:"env"`
+	Used   string `json:"used" bson:"used"`
 	Prefix struct {
-		Mysql string `json:"mysql"`
-		Redis string `json:"redis"`
-	} `json:"prefix"`
+		Mysql   string `json:"mysql" bson:"mysql"`
+		Redis   string `json:"redis" bson:"redis"`
+		Mongodb string `json:"mongodb" bson:"mongodb"`
+	} `json:"prefix" bson:"prefix"`
 }
 
 var Config = &config{}
@@ -116,7 +124,11 @@ func (c *config) Init(cf string) {
 	c.Config.Path = c.Cnf.String("go.config.path")
 	c.Config.Used = c.Cnf.String("go.config.used")
 	c.Config.Prefix.Mysql = c.Cnf.String("go.config.prefix.mysql")
+	c.Config.Prefix.Mongodb = c.Cnf.String("go.config.prefix.mongodb")
 	c.Config.Prefix.Redis = c.Cnf.String("go.config.prefix.redis")
+	c.Log.LogDb = c.Cnf.String("go.log.db")
+	c.Log.RequestTableName = c.Cnf.String("go.log.req")
+	c.Log.DbName = c.Cnf.String("go.log.dbName")
 	c.Logger.Level = c.Cnf.String("go.logger.level")
 	c.Logger.Out = c.Cnf.String("go.logger.out")
 	c.Logger.File = c.Cnf.String("go.logger.file")

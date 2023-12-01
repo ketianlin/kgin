@@ -1,0 +1,11 @@
+go:
+  data:
+    mongodb:
+      uri: mongodb://192.168.20.130:27017
+      username: admin
+      password: admin
+      db: kgin_db
+      timeout: 10
+    mongo_pool:
+      max: 20
+      min: 10

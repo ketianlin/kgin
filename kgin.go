@@ -62,6 +62,11 @@ func Init(configFile string) {
 		db.Redis.Init(config.Config.GetConfigUrl(config.Config.Config.Prefix.Redis))
 		logs.Info("连接Redis成功")
 	}
+	if strings.Contains(configs, "mongodb") {
+		logs.Info("正在连接MongoDB")
+		db.Mongo.Init(config.Config.GetConfigUrl(config.Config.Config.Prefix.Mongodb))
+		logs.Info("连接MongoDB成功")
+	}
 
 	//设置定时任务自动检查
 	ticker := time.NewTicker(time.Minute * 5)
