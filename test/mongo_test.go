@@ -66,10 +66,55 @@ func (UserBasic) CollectionName() string {
 func transactionUserMongoDB() {
 	client, err := db.Mongo.GetTransactionClient("user_basic")
 	if err != nil {
-		fmt.Println("transaction error: ", err.Error())
+		fmt.Println("GetTransactionClient error: ", err.Error())
 		return
 	}
-	fmt.Println(client)
+	account1 := "diaomao-account1"
+	account2 := "diaomao-account2"
+	nickname1 := "吊毛-nickname1"
+	nickname2 := "吊毛-nickname2"
+	email1 := "diaomao123@qq.com"
+	email2 := "diaomao456@qq.com"
+	callback := func(sessCtx context.Context) (interface{}, error) {
+		// 重要：确保事务中的每一个操作，都使用传入的sessCtx参数
+		if _, err := client.InsertOne(context.TODO(), UserBasic{
+			Id:        primitive.NewObjectID(),
+			Account:   account1,
+			Password:  "123456",
+			Nickname:  nickname1,
+			Sex:       1,
+			Email:     email1,
+			Avatar:    "http://www.diaomao.com/images/dm666.png",
+			CreatedAt: time.Now().UnixMilli(),
+			UpdatedAt: time.Now().UnixMilli(),
+			Score:     98,
+		}); err != nil {
+			fmt.Println("add one error: ", err.Error())
+			return nil, err
+		}
+		if _, err := client.InsertOne(context.TODO(), UserBasic{
+			Id:        primitive.NewObjectID(),
+			Account:   account2,
+			Password:  "123456",
+			Nickname:  nickname2,
+			Sex:       1,
+			Email:     email2,
+			Avatar:    "http://www.diaomao.com/images/dm666.png",
+			CreatedAt: time.Now().UnixMilli(),
+			UpdatedAt: time.Now().UnixMilli(),
+			Score:     98,
+		}); err != nil {
+			fmt.Println("add two error: ", err.Error())
+			return nil, err
+		}
+		return nil, nil
+	}
+	result, err := client.DoTransaction(context.TODO(), callback)
+	if err != nil {
+		fmt.Println("DoTransaction error: ", err.Error())
+		return
+	}
+	fmt.Println("result: ", result)
 }
 
 // 事务 操作 结束 --------------------------------
