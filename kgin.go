@@ -67,6 +67,11 @@ func Init(configFile string) {
 		db.Mongo.Init(config.Config.GetConfigUrl(config.Config.Config.Prefix.Mongodb))
 		logs.Info("连接MongoDB成功")
 	}
+	if strings.Contains(configs, "sqlite") {
+		logs.Info("正在连接SQLite")
+		db.Sqlite.Init(config.Config.Config.Prefix.Sqlite)
+		logs.Info("连接SQLite成功")
+	}
 
 	//设置定时任务自动检查
 	ticker := time.NewTicker(time.Minute * 5)

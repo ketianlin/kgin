@@ -5,12 +5,13 @@ go:
     type: .yml
     mid: "-"
     path: /home/ke666/my_codes/go_codes/kgin/test
-    used: mysql,rabbitmq,redis,mongodb
+    used: mysql,rabbitmq,redis,mongodb,sqlite
     prefix:
       mysql: kgin-mysql
       redis: kgin-redis
       rabbitmq: kgin-rabbitmq
       mongodb: kgin-mongodb
+      sqlite: kgin-sqlite
   logger:
     level: debug
     out: console,file

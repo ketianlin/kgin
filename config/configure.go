@@ -48,6 +48,7 @@ type appConfig struct {
 		Mysql   string `json:"mysql" bson:"mysql"`
 		Redis   string `json:"redis" bson:"redis"`
 		Mongodb string `json:"mongodb" bson:"mongodb"`
+		Sqlite  string `json:"sqlite" bson:"sqlite"`
 	} `json:"prefix" bson:"prefix"`
 }
 
@@ -126,6 +127,7 @@ func (c *config) Init(cf string) {
 	c.Config.Prefix.Mysql = c.Cnf.String("go.config.prefix.mysql")
 	c.Config.Prefix.Mongodb = c.Cnf.String("go.config.prefix.mongodb")
 	c.Config.Prefix.Redis = c.Cnf.String("go.config.prefix.redis")
+	c.Config.Prefix.Sqlite = c.Cnf.String("go.config.prefix.sqlite")
 	c.Log.LogDb = c.Cnf.String("go.log.db")
 	c.Log.RequestTableName = c.Cnf.String("go.log.req")
 	c.Log.DbName = c.Cnf.String("go.log.dbName")
