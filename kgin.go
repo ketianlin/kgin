@@ -100,6 +100,13 @@ func (m *kgin) checkAll() {
 			logs.Error("Redis check failed： {}", err.Error())
 		}
 	}
+	if strings.Contains(configs, "mongodb") {
+		logs.Info("正在检查MongoDB")
+		err = db.Mongo.Check()
+		if err != nil {
+			logs.Error("MongoDB check failed： {}", err.Error())
+		}
+	}
 	if m.plugins != nil {
 		for dbConfigName, pl := range m.plugins {
 			if pl.CheckFunc != nil {
@@ -122,6 +129,14 @@ func (m *kgin) SafeExit() {
 	if strings.Contains(configs, "redis") {
 		logs.Info("正在关闭Redis连接")
 		db.Redis.Close()
+	}
+	if strings.Contains(configs, "sqlite") {
+		logs.Info("正在关闭SQLite连接")
+		db.Sqlite.Close()
+	}
+	if strings.Contains(configs, "mongodb") {
+		logs.Info("正在关闭MongoDB连接")
+		db.Mongo.Close()
 	}
 	if m.plugins != nil {
 		for dbConfigName, pl := range m.plugins {
