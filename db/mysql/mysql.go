@@ -10,6 +10,7 @@ import (
 	"github.com/levigross/grequests"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"io/ioutil"
 	"strings"
 	"time"
@@ -53,7 +54,12 @@ func (m *MysqlClient) Init(mysqlConfigUrl string) {
 			m.conf = nil
 			return
 		}
-		m.mysql, _ = gorm.Open(mysql.Open(m.conf.String("go.data.mysql")), &gorm.Config{})
+		gc := &gorm.Config{}
+		showSql := m.conf.Bool("go.data.show_sql")
+		if showSql {
+			gc.Logger = logger.Default.LogMode(logger.Info)
+		}
+		m.mysql, _ = gorm.Open(mysql.Open(m.conf.String("go.data.mysql")), gc)
 		if m.conf.Bool("go.data.mysql_debug") {
 			m.mysql = m.mysql.Debug()
 		}
